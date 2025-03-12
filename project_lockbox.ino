@@ -128,12 +128,13 @@ int const TX_PIN = 4; //transmitting bluetooth
 #define RED_LED 2
 #define GREEN_LED 5
 #define BUZZER 6
+#define BUTTON A4
 
 #include <SoftwareSerial.h> //include library
 
 SoftwareSerial tooth(TX_PIN, RX_PIN); //create a softwareserial object, set tx and rx pins, tx goes first then rx
 
-char a ; //an empty character to store 
+String input = " " ; //an empty string to store 
 
 
 //ultrasonic sensor stuff:
@@ -162,6 +163,7 @@ Serial.println(F("Scan PICC to see UID, SAK, type, and data blocks..."));
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
   pinMode(BUZZER, OUTPUT);
+  pinMode(BUTTON, INOYT);
 
 //ultrasonic sensor stuff:
   pinMode(TRIGGER_PIN, OUTPUT); //output bc it sends pulse out
@@ -171,6 +173,63 @@ Serial.println(F("Scan PICC to see UID, SAK, type, and data blocks..."));
 
 
 void loop() {
+
+//ultrasonic sensor stuff
+
+  digitalWrite(TRIGGER_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIGGER_PIN, HIGH);
+  delayMicroseconds(10); //this is how long it has to wait to send out a pulse
+
+  float duration = pulseIn(ECHO_PIN, HIGH); // tell us the time from pulse sent to pulse received
+  Serial.println(duration);
+
+  //v=s/t
+  float speed = 0.034; //measured in cm/microseconds
+  float distance = (speed * duration)/2;
+  
+  Serial.println("distance:");
+  Serial.println(distance);
+  delay(100);
+
+if (distance <= 10){
+  Serial.println("Step back! You're too close!");
+  digitalWrite(BUZZER, HIGH);
+  delay(200);
+  digitalWrite(BUZZER, LOW);
+  delay(200);
+}
+
+tooth.print("Enter your password:");
+
+  if (tooth.available()>0){ //if something is inputed on device
+  input = tooth.read();
+  tooth.print("Password: ");
+  tooth.println(input);
+  }
+
+if (input != "0329"){
+  digitalWrite(BUZZER, HIGH);
+  delay(1000);
+  digitalWrite(BUZZER, LOW);
+  delay(100);
+} else if (input == "0329"){
+    Serial.println("Password correct!");
+    digitalWrite(GREEN_LED, HIGH);
+    delay(1000);
+    digitalWrite(GREEN_LED, LOW);
+    delay(1000);
+    
+  }
+
+for (int i = 0; i < 5; i++) { //beeps if the confirmation code was incorrect 
+  digitalWrite(BUZZER, HIGH);
+  delay(200);
+  digitalWrite(BUZZER, LOW);
+  delay(200);
+  }
+
+
 
  // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
 
