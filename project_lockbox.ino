@@ -1,5 +1,3 @@
-
-
 //DO NOT WIRE THIS WITH 5V --> 3.3
 //dont wire IRQ
 //rst 9, miso 12, mosi 11, sca 13, sda 10
@@ -10,8 +8,6 @@
 #include <deprecated.h>
 
 #include <require_cpp11.h>
-
-
 
 /*
 
@@ -112,6 +108,9 @@
 #include <MFRC522.h>
 
 
+#include <Servo.h> 
+#define SPIN_PIN A0
+Servo spin;//make a servo object called spin
 
 #define RST_PIN 9 // Configurable, see typical pin layout above
 
@@ -123,8 +122,8 @@ MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance
 
 
 //bluetooth stuff:
-int const RX_PIN = 3; //receiving bluetooth
-int const TX_PIN = 4; //transmitting bluetooth
+int const RX_PIN = 8; //receiving bluetooth
+int const TX_PIN = 7; //transmitting bluetooth
 #define RED_LED 2
 #define GREEN_LED 5
 #define BUZZER 6
@@ -138,8 +137,8 @@ String input = " " ; //an empty string to store
 
 
 //ultrasonic sensor stuff:
-#define TRIGGER_PIN 7 //this is the pin that sends out the pulse
-#define ECHO_PIN 8 //this is the pin that reads the distance
+#define TRIGGER_PIN 4 //this is the pin that sends out the pulse
+#define ECHO_PIN 3 //this is the pin that reads the distance
 
 void setup() {
 
@@ -163,16 +162,28 @@ Serial.println(F("Scan PICC to see UID, SAK, type, and data blocks..."));
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
   pinMode(BUZZER, OUTPUT);
-  pinMode(BUTTON, INOYT);
+  pinMode(BUTTON, INPUT);
 
 //ultrasonic sensor stuff:
   pinMode(TRIGGER_PIN, OUTPUT); //output bc it sends pulse out
   pinMode(ECHO_PIN, INPUT); //bc it is reading what is coming in
+
+spin.attach(SPIN_PIN);
+spin.write(90);
+
 }
 
 
 
 void loop() {
+
+//not working
+spin.write(100);
+delay(2000);
+spin.write(80);
+delay(2000);
+
+
 
 //ultrasonic sensor stuff
 
