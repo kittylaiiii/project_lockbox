@@ -168,8 +168,8 @@ Serial.println(F("Scan PICC to see UID, SAK, type, and data blocks..."));
   pinMode(TRIGGER_PIN, OUTPUT); //output bc it sends pulse out
   pinMode(ECHO_PIN, INPUT); //bc it is reading what is coming in
 
-spin.attach(SPIN_PIN);
-spin.write(90);
+spin.attach(A0);
+
 
 }
 
@@ -177,12 +177,11 @@ spin.write(90);
 
 void loop() {
 
-//not working
-spin.write(100);
-delay(2000);
-spin.write(80);
-delay(2000);
 
+spin.write(60);
+delay(6000);
+spin.write(120);
+delay(3000);
 
 
 //ultrasonic sensor stuff
