@@ -177,11 +177,10 @@ spin.attach(A0);
 
 void loop() {
 
-
 spin.write(60);
-delay(6000);
+delay(9000);
 spin.write(120);
-delay(3000);
+delay(9000);
 
 
 //ultrasonic sensor stuff
@@ -291,5 +290,6 @@ Serial.print(buffer[i] < 0x10 ? " 0" : " ");
 Serial.print(buffer[i], HEX);
 
 }
+
 
 }
