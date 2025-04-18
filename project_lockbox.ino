@@ -168,7 +168,7 @@ void setup() {
   pinMode(TRIGGER_PIN, OUTPUT);  //output bc it sends pulse out
   pinMode(ECHO_PIN, INPUT);      //bc it is reading what is coming in
 
-  spin.attach(A0);
+  spin.attach(2);
 
 }
 
@@ -176,9 +176,9 @@ void setup() {
 
 void loop() {
   spin.write(60);
-  delay(9000);
+  delay(8900);
   spin.write(120);
-  delay(9000);
+  delay(8900);
 
 
 byte authorizedUID[] = { 0x96, 0xDE, 0x29, 0x03 };  // Example UID (change to your real UID)
